@@ -8,10 +8,10 @@
 
     <style>
         :root {
-            --page-horizontal-paddings: calc(100vw - 80vw);
+            --page-horizontal-paddings: 20vw;
 
             @media screen and (max-width: 1025px) {
-                --page-horizontal-paddings: calc(100vw - 97vw);
+                --page-horizontal-paddings: 3vw;
             }
         }
 
@@ -66,7 +66,7 @@
             cursor: pointer;
 
             &:hover {
-                background-color: #8ebbee;
+                background-color: #c6dffb;
             }
         }
 
@@ -97,6 +97,16 @@
             margin-bottom: 50px;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        #menu {}
+
+        .menu_zodiac_title {
+            margin-left: 10px;
+        }
+
+        .menu_zodiac_description {
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -4087,7 +4097,7 @@
             </div>
 
 
-            <h3 id="Aquarius_mch">Жінка-Водолій</h3>
+            <h3 id="Aquarius_fch">Жінка-Водолій</h3>
 
             <div class="zodiac-description">
                 <p>Жінки цього знака дуже чарівні. У них одразу кілька жінок, і це дає гаму переживань. Ця жінка весь
@@ -4765,6 +4775,73 @@
         <hr />
 
     </section>
+
+    <div id="menu">
+        <div id="characteristic_list">Характеристика</div>
+    </div>
+
+
+    <script>
+        const ref_menu = document.querySelector("#menu");
+        const ref_characteristic_list = document.querySelector("#characteristic_list");
+
+        const zodiac_list = [
+            "Aries",
+            "Taurus",
+            "Gemini",
+            "Cancer",
+            "Leo",
+            "Virgo",
+            "Libra",
+            "Scorpio",
+            "Sagittarius",
+            "Capricorn",
+            "Aquarius",
+            "Pisces",
+        ];
+
+        zodiac_list.map(z => {
+            const new_item = document.createElement("div");
+            new_item.classList.add("menu_zodiac_title");
+            new_item.innerHTML = document.querySelector("#" + z).querySelector("h2").textContent;
+            ref_characteristic_list.appendChild(new_item);
+
+            const new_subitem_1 = document.createElement("div");
+            new_subitem_1.classList.add("menu_zodiac_description");
+            new_subitem_1.innerHTML = document.querySelector("#" + z + "_gch").textContent;
+            new_item.appendChild(new_subitem_1);
+
+            const new_subitem_2 = document.createElement("div");
+            new_subitem_2.classList.add("menu_zodiac_description");
+            new_subitem_2.innerHTML = document.querySelector("#" + z + "_mch").textContent;
+            new_item.appendChild(new_subitem_2);
+
+            const new_subitem_3 = document.createElement("div");
+            new_subitem_3.classList.add("menu_zodiac_description");
+            new_subitem_3.innerHTML = document.querySelector("#" + z + "_fch").textContent;
+            new_item.appendChild(new_subitem_3);
+
+            const new_subitem_4 = document.createElement("div");
+            new_subitem_4.classList.add("menu_zodiac_description");
+            new_subitem_4.innerHTML = document.querySelector("#" + z + "_ach").textContent;
+            new_item.appendChild(new_subitem_4);
+
+            const new_subitem_5 = document.createElement("div");
+            new_subitem_5.classList.add("menu_zodiac_description");
+            new_subitem_5.innerHTML = document.querySelector("#" + z + "_1d").textContent;
+            new_item.appendChild(new_subitem_5);
+
+            const new_subitem_6 = document.createElement("div");
+            new_subitem_6.classList.add("menu_zodiac_description");
+            new_subitem_6.innerHTML = document.querySelector("#" + z + "_2d").textContent;
+            new_item.appendChild(new_subitem_6);
+
+            const new_subitem_7 = document.createElement("div");
+            new_subitem_7.classList.add("menu_zodiac_description");
+            new_subitem_7.innerHTML = document.querySelector("#" + z + "_3d").textContent;
+            new_item.appendChild(new_subitem_7);
+        });        
+    </script>
 
 </body>
 
