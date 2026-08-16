@@ -99,15 +99,37 @@
             margin-right: auto;
         }
 
-        #menu_button {
+        #buttons_block {
             position: fixed;
-            top: 10px;
+            bottom: 10px;
             left: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        #settings_button {
             padding: 8px 10px;
             background-color: var(--background-color);
             border: 1px solid #ccc;
             border-radius: 50px;
-            box-shadow: 0 0 4px #ccc;
+            box-shadow: 0 0 10px #ccc;
+            font-weight: 700;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--accent-color);
+                color: var(--font-hover-color);
+            }
+        }
+
+        #menu_button {
+            padding: 8px 10px;
+            background-color: var(--background-color);
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            box-shadow: 0 0 10px #ccc;
             font-weight: 700;
             cursor: pointer;
 
@@ -118,14 +140,11 @@
         }
 
         #to_top_button {
-            position: fixed;
-            top: 10px;
-            right: 10px;
             padding: 6px 10px;
             background-color: var(--background-color);
             border: 1px solid #ccc;
             border-radius: 50px;
-            box-shadow: 0 0 4px #ccc;
+            box-shadow: 0 0 10px #ccc;
             font-weight: 700;
             cursor: pointer;
 
@@ -150,10 +169,11 @@
             position: fixed;
             top: 0px;
             left: 0px;
+            min-width: 50vw;
             height: 100vh;
             box-sizing: border-box;
             padding: 20px;
-            padding-top: 60px;
+            padding-bottom: 80px;
             background-color: var(--background-color);
             border-right: 1px solid #ccc;
             box-shadow: 0px 0px 20px #aaa;
@@ -6204,8 +6224,11 @@
         </div>
     </div>
 
-    <button id="menu_button" type="button" title="Меню">☰</button>
-    <button id="to_top_button" type="button" title="На гору" onClick="window.scrollTo(0,0)">⋀</button>
+    <div id="buttons_block">
+        <button id="settings_button" type="button" title="Налаштування">⚙</button>
+        <button id="menu_button" type="button" title="Меню">☰</button>
+        <button id="to_top_button" type="button" title="На гору" onClick="window.scrollTo(0,0)">⋀</button>
+    </div>
 
 
     <script>
