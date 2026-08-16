@@ -4913,46 +4913,54 @@
 
             const new_subitem_1 = document.createElement("div");
             new_subitem_1.classList.add("menu_zodiac_description");
-            new_subitem_1.setAttribute("onclick", `window.location.href="#${z}"`);
+            new_subitem_1.setAttribute("onclick", `move_to("#${z}")`);
             new_subitem_1.innerHTML = document.querySelector("#" + z + "_gch").textContent;
             new_item.appendChild(new_subitem_1);
 
             const new_subitem_2 = document.createElement("div");
             new_subitem_2.classList.add("menu_zodiac_description");
-            new_subitem_2.setAttribute("onclick", `window.location.href="#${z}_mch"`);
+            new_subitem_2.setAttribute("onclick", `move_to("#${z}_mch")`);
             new_subitem_2.innerHTML = document.querySelector("#" + z + "_mch").textContent;
             new_item.appendChild(new_subitem_2);
 
             const new_subitem_3 = document.createElement("div");
             new_subitem_3.classList.add("menu_zodiac_description");
-            new_subitem_3.setAttribute("onclick", `window.location.href="#${z}_fch"`);
+            new_subitem_3.setAttribute("onclick", `move_to("#${z}_fch")`);
             new_subitem_3.innerHTML = document.querySelector("#" + z + "_fch").textContent;
             new_item.appendChild(new_subitem_3);
 
             const new_subitem_4 = document.createElement("div");
             new_subitem_4.classList.add("menu_zodiac_description");
-            new_subitem_4.setAttribute("onclick", `window.location.href="#${z}_ach"`);
+            new_subitem_4.setAttribute("onclick", `move_to("#${z}_ach")`);
             new_subitem_4.innerHTML = document.querySelector("#" + z + "_ach").textContent;
             new_item.appendChild(new_subitem_4);
 
             const new_subitem_5 = document.createElement("div");
             new_subitem_5.classList.add("menu_zodiac_description");
-            new_subitem_5.setAttribute("onclick", `window.location.href="#${z}_1d"`);
+            new_subitem_5.setAttribute("onclick", `move_to("#${z}_1d")`);
             new_subitem_5.innerHTML = document.querySelector("#" + z + "_1d").textContent;
             new_item.appendChild(new_subitem_5);
 
             const new_subitem_6 = document.createElement("div");
             new_subitem_6.classList.add("menu_zodiac_description");
-            new_subitem_6.setAttribute("onclick", `window.location.href="#${z}_2d"`);
+            new_subitem_6.setAttribute("onclick", `move_to("#${z}_2d")`);
             new_subitem_6.innerHTML = document.querySelector("#" + z + "_2d").textContent;
             new_item.appendChild(new_subitem_6);
 
             const new_subitem_7 = document.createElement("div");
             new_subitem_7.classList.add("menu_zodiac_description");
-            new_subitem_7.setAttribute("onclick", `window.location.href="#${z}_3d"`);
+            new_subitem_7.setAttribute("onclick", `move_to("#${z}_3d")`);
             new_subitem_7.innerHTML = document.querySelector("#" + z + "_3d").textContent;
             new_item.appendChild(new_subitem_7);
         });
+
+        function move_to(id) {
+            window.location.href = id;
+
+            ref_menu.style.display = "none";
+            ref_closer.style.display = "none";
+            is_menu_show = false;
+        }
 
         ref_menu_button.addEventListener("click", () => {
             ref_menu.style.display = is_menu_show ? "none" : "block";
