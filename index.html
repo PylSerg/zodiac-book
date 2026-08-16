@@ -24,8 +24,6 @@
 
             padding-top: 30px;
             padding-bottom: 100px;
-            padding-left: 10px;
-            padding-right: 10px;
         }
 
         hr {
@@ -66,7 +64,8 @@
             cursor: pointer;
 
             &:hover {
-                background-color: #c6dffb;
+                background-color: #000;
+                color: #fff;
             }
         }
 
@@ -99,7 +98,53 @@
             margin-right: auto;
         }
 
-        #menu {}
+        #menu_button {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+
+            padding: 8px 10px;
+
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            box-shadow: 0 0 4px #ccc;
+
+            cursor: pointer;
+
+            &:hover {
+                background-color: #000;
+                color: #fff;
+            }
+        }
+
+        #closer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        #menu {
+            display: none;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+
+            height: 100vh;
+            box-sizing: border-box;
+            padding: 20px;
+            padding-top: 50px;
+
+            background-color: #fff;
+            border-right: 1px solid #ccc;
+            box-shadow: 0px 0px 20px #aaa;
+
+            overflow: auto;
+        }
 
         .menu_zodiac_title {
             margin-left: 10px;
@@ -4776,14 +4821,22 @@
 
     </section>
 
+    <div id="closer"></div>
+
     <div id="menu">
         <div id="characteristic_list">Характеристика</div>
     </div>
 
+    <button id="menu_button" type="button">☰</button>
+
 
     <script>
+        const ref_closer = document.querySelector("#closer");
+        const ref_menu_button = document.querySelector("#menu_button");
         const ref_menu = document.querySelector("#menu");
-        const ref_characteristic_list = document.querySelector("#characteristic_list");
+        const ref_menu_characteristic_list = document.querySelector("#characteristic_list");
+
+        let is_menu_show = false;
 
         const zodiac_list = [
             "Aries",
@@ -4804,7 +4857,7 @@
             const new_item = document.createElement("div");
             new_item.classList.add("menu_zodiac_title");
             new_item.innerHTML = document.querySelector("#" + z).querySelector("h2").textContent;
-            ref_characteristic_list.appendChild(new_item);
+            ref_menu_characteristic_list.appendChild(new_item);
 
             const new_subitem_1 = document.createElement("div");
             new_subitem_1.classList.add("menu_zodiac_description");
@@ -4840,7 +4893,19 @@
             new_subitem_7.classList.add("menu_zodiac_description");
             new_subitem_7.innerHTML = document.querySelector("#" + z + "_3d").textContent;
             new_item.appendChild(new_subitem_7);
-        });        
+        });
+
+        ref_menu_button.addEventListener("click", () => {
+            ref_menu.style.display = is_menu_show ? "none" : "block";
+            ref_closer.style.display = is_menu_show ? "none" : "block";
+            is_menu_show = !is_menu_show;
+        });
+
+        ref_closer.addEventListener("click", () => {
+            ref_menu.style.display = "none";
+            ref_closer.style.display = "none";
+            is_menu_show = false;
+        })        
     </script>
 
 </body>
