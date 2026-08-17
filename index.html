@@ -12,7 +12,7 @@
             --background-color: #fff;
             --font-color: #000;
             --font-hover-color: #000;
-            --font-size: 20px;
+            --font-size: 18px;
             --page-horizontal-paddings: 20vw;
 
             @media screen and (max-width: 1025px) {
@@ -108,6 +108,16 @@
             margin-right: auto;
         }
 
+        #closer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
         #buttons_block {
             position: fixed;
             bottom: 20px;
@@ -134,16 +144,6 @@
                 background-color: var(--accent-color);
                 color: var(--font-hover-color);
             }
-        }
-
-        #closer {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            box-sizing: border-box;
         }
 
         #menu {
@@ -228,6 +228,56 @@
 
         .menu_zodiac_description_container {
             padding-bottom: 20px;
+        }
+
+        #settings {
+            display: none;
+            position: fixed;
+            left: 20px;
+            bottom: 80px;
+            max-width: 90vw;
+            max-height: 80vh;
+            background-color: var(--background-color);
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px #aaa;
+            overflow: hidden;
+        }
+
+        .settings_container {
+            padding: 20px;
+        }
+
+        .settings_item {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings_item_control {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            margin-left: 30px;
+        }
+
+        .settings_item_control__button {
+            width: calc(var(--font-size) + 8px);
+            height: calc(var(--font-size) + 8px);
+            font-size: var(--font-size);
+            text-align: center;
+            background-color: var(--background-color);
+            border: 1px solid #ccc;
+            border-radius: 100%;
+            font-weight: 700;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--accent-color);
+                color: var(--font-hover-color);
+            }
         }
     </style>
 </head>
@@ -6242,7 +6292,21 @@
         </div>
     </div>
 
-    <div id="settings"></div>
+    <div id="settings">
+        <div class="settings_container">
+            <div class="settings_item">
+                <span class="settings_item_title">Розмір шрифту</span>
+
+                <div class="settings_item_control">
+                    <button id="reduce_font_size_button" class="settings_item_control__button" type="button"
+                        title="Зменшити розмір шрифту">-</button>
+                    <span id="font_size_value" class="settings_item_control__value"></span>
+                    <button id="increase_font_size_button" class="settings_item_control__button" type="button"
+                        title="Збільшити розмір шрифту">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="buttons_block">
         <button id="settings_button" type="button" title="Налаштування">⚙</button>
@@ -6252,8 +6316,13 @@
 
 
     <script>
+        const root_style = document.documentElement.style;
         const ref_closer = document.querySelector("#closer");
         const ref_settings_button = document.querySelector("#settings_button");
+        const ref_settings = document.querySelector("#settings");
+        const ref_reduce_font_size_button = document.querySelector("#reduce_font_size_button");
+        const ref_increase_font_size_button = document.querySelector("#increase_font_size_button");
+        const ref_font_size_value = document.querySelector("#font_size_value");
         const ref_menu_button = document.querySelector("#menu_button");
         const ref_menu = document.querySelector("#menu");
         const ref_menu_characteristic_list = document.querySelector("#characteristic_list");
@@ -6275,6 +6344,15 @@
             "Aquarius",
             "Pisces",
         ];
+
+        if (localStorage.getItem("zb_font_size")) {
+            root_style.setProperty("--font-size", localStorage.getItem("zb_font_size") + "px");
+        } else {
+            root_style.setProperty("--font-size", "18px");
+            localStorage.setItem("zb_font_size", "18");
+        };
+
+        update_settings_values();
 
         zodiac_list.map(z => {
             const new_item = document.createElement("div");
@@ -6336,6 +6414,11 @@
         });
 
 
+
+        function update_settings_values() {
+            ref_font_size_value.textContent = localStorage.getItem("zb_font_size");
+        };
+
         function togle_menu_zodiac_description_container(container) {
             const current_container = document.querySelector(container);
             const container_style = current_container.getAttribute("style");
@@ -6355,6 +6438,18 @@
             is_menu_show = false;
         };
 
+        ref_settings_button.addEventListener("click", () => {
+            if (is_settings_show) {
+                ref_settings.style.display = "none";
+                ref_closer.style.display = "none";
+            } else {
+                ref_settings.style.display = "block";
+                ref_closer.style.display = "block";
+            };
+
+            is_settings_show = !is_settings_show;
+        });
+
         ref_menu_button.addEventListener("click", () => {
             if (is_menu_show) {
                 ref_menu.style.display = "none";
@@ -6368,10 +6463,25 @@
         });
 
         ref_closer.addEventListener("click", () => {
-            ref_menu.style.display = "none";
             ref_closer.style.display = "none";
+            ref_settings.style.display = "none";
+            ref_menu.style.display = "none";
+
+            is_settings_show = false;
             is_menu_show = false;
-        });        
+        });
+
+        ref_reduce_font_size_button.addEventListener("click", () => {
+            root_style.setProperty("--font-size", Number(localStorage.getItem("zb_font_size")) - 1 + "px");
+            localStorage.setItem("zb_font_size", Number(localStorage.getItem("zb_font_size")) - 1);
+            update_settings_values();
+        });
+
+        ref_increase_font_size_button.addEventListener("click", () => {
+            root_style.setProperty("--font-size", Number(localStorage.getItem("zb_font_size")) + 1 + "px");
+            localStorage.setItem("zb_font_size", Number(localStorage.getItem("zb_font_size")) + 1);
+            update_settings_values();
+        });
     </script>
 
 </body>
