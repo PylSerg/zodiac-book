@@ -21,6 +21,7 @@
         }
 
         body {
+            background-color: var(--background-color);
             color: var(--font-color);
             font-size: var(--font-size);
             font-family: var(--font-family);
@@ -134,10 +135,11 @@
         #to_top_button {
             width: 40px;
             height: 40px;
+            color: var(--font-color);
             background-color: var(--background-color);
-            border: 1px solid #ccc;
+            border: 1px solid var(--accent-color);
             border-radius: 100%;
-            box-shadow: 0 0 10px #ccc;
+            box-shadow: 0 0 10px var(--accent-color);
             font-weight: 700;
             cursor: pointer;
 
@@ -268,8 +270,9 @@
 
         #font_family_selector {
             background-color: var(--background-color);
-            border: 1px solid #ccc;
+            border: 1px solid var(--accent-color);
             border-radius: 6px;
+            color: var(--font-color);
             font-family: var(--font-family);
             font-size: var(--font-size);
         }
@@ -285,10 +288,11 @@
         .settings_item_control__button {
             width: calc(var(--font-size) + 8px);
             height: calc(var(--font-size) + 8px);
+            color: var(--font-color);
             font-size: var(--font-size);
             text-align: center;
             background-color: var(--background-color);
-            border: 1px solid #ccc;
+            border: 1px solid var(--accent-color);
             border-radius: 100%;
             font-weight: 700;
             cursor: pointer;
@@ -303,7 +307,7 @@
             width: calc(var(--font-size) * 2);
             padding: 3px 8px;
             text-align: center;
-            border: 1px solid #ccc;
+            border: 1px solid var(--accent-color);
             border-radius: 10px;
             cursor: default;
         }
@@ -6381,6 +6385,18 @@
                         title="Збільшити ширину полів">+</button>
                 </div>
             </div>
+
+            <div class="settings_item">
+                <span class="settings_item_title">Тема</span>
+
+                <div class="settings_item_control">
+                    <button id="reduce_dark_theme_button" class="settings_item_control__button" type="button"
+                        title="Світліше">-</button>
+                    <span id="dark_theme_value" class="settings_item_control__value">1</span>
+                    <button id="increase_dark_theme_button" class="settings_item_control__button" type="button"
+                        title="Темніше">+</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -6406,6 +6422,9 @@
         const ref_reduce_horizontal_paddings_button = document.querySelector("#reduce_horizontal_paddings_button");
         const ref_increase_horizontal_paddings_button = document.querySelector("#increase_horizontal_paddings_button");
         const ref_horizontal_paddings_value = document.querySelector("#horizontal_paddings_value");
+        const ref_reduce_dark_theme_button = document.querySelector("#reduce_dark_theme_button");
+        const ref_increase_dark_theme_button = document.querySelector("#increase_dark_theme_button");
+        const ref_dark_theme_value = document.querySelector("#dark_theme_value");
         const ref_menu_button = document.querySelector("#menu_button");
         const ref_menu = document.querySelector("#menu");
         const ref_menu_characteristic_list = document.querySelector("#characteristic_list");
@@ -6461,6 +6480,13 @@
                 root_style.setProperty("--page-horizontal-paddings", "5vw");
                 localStorage.setItem("zb_horizontal_paddings", "5");
             };
+        };
+
+        if (localStorage.getItem("zb_theme")) {
+            change_theme(localStorage.getItem("zb_theme"));
+        } else {
+            localStorage.setItem("zb_theme", "1");
+            change_theme("1");
         };
 
         update_settings_values();
@@ -6530,6 +6556,7 @@
             ref_font_size_value.textContent = localStorage.getItem("zb_font_size");
             ref_line_height_value.textContent = localStorage.getItem("zb_line_height");
             ref_horizontal_paddings_value.textContent = localStorage.getItem("zb_horizontal_paddings");
+            ref_dark_theme_value.textContent = localStorage.getItem("zb_theme");
 
             const options = ref_font_family_selector.options;
 
@@ -6558,6 +6585,62 @@
             ref_menu.style.display = "none";
             ref_closer.style.display = "none";
             is_menu_show = false;
+        };
+
+        function change_theme(scheme) {
+            scheme = String(scheme);
+
+            switch (scheme) {
+                case "1":
+                    root_style.setProperty("--background-color", "#fff");
+                    root_style.setProperty("--font-color", "#000");
+                    break;
+
+                case "2":
+                    root_style.setProperty("--background-color", "#fff");
+                    root_style.setProperty("--font-color", "#555");
+                    break;
+
+                case "3":
+                    root_style.setProperty("--background-color", "#ccc");
+                    root_style.setProperty("--font-color", "#000");
+                    break;
+
+                case "4":
+                    root_style.setProperty("--background-color", "#cca");
+                    root_style.setProperty("--font-color", "#111");
+                    break;
+
+                case "5":
+                    root_style.setProperty("--background-color", "#889");
+                    root_style.setProperty("--font-color", "#000");
+                    break;
+
+                case "6":
+                    root_style.setProperty("--background-color", "#665");
+                    root_style.setProperty("--font-color", "#fff");
+                    break;
+
+                case "7":
+                    root_style.setProperty("--background-color", "#333");
+                    root_style.setProperty("--font-color", "#ccc");
+                    break;
+
+                case "8":
+                    root_style.setProperty("--background-color", "#111");
+                    root_style.setProperty("--font-color", "#bbb");
+                    break;
+
+                case "9":
+                    root_style.setProperty("--background-color", "#000");
+                    root_style.setProperty("--font-color", "#fff");
+                    break;
+
+                default:
+                    root_style.setProperty("--background-color", "#fff");
+                    root_style.setProperty("--font-color", "#000");
+                    break;
+            };
         };
 
         ref_closer.addEventListener("click", () => {
@@ -6643,6 +6726,22 @@
         ref_increase_horizontal_paddings_button.addEventListener("click", () => {
             root_style.setProperty("--page-horizontal-paddings", Number(localStorage.getItem("zb_horizontal_paddings")) + 1 + "vw");
             localStorage.setItem("zb_horizontal_paddings", Number(localStorage.getItem("zb_horizontal_paddings")) + 1);
+            update_settings_values();
+        });
+
+        ref_reduce_dark_theme_button.addEventListener("click", () => {
+            if (Number(localStorage.getItem("zb_theme")) < 2) return;
+
+            change_theme(Number(localStorage.getItem("zb_theme")) - 1);
+            localStorage.setItem("zb_theme", Number(localStorage.getItem("zb_theme")) - 1);
+            update_settings_values();
+        });
+
+        ref_increase_dark_theme_button.addEventListener("click", () => {
+            if (Number(localStorage.getItem("zb_theme")) > 8) return;
+
+            change_theme(Number(localStorage.getItem("zb_theme")) + 1);
+            localStorage.setItem("zb_theme", Number(localStorage.getItem("zb_theme")) + 1);
             update_settings_values();
         });
     </script>
