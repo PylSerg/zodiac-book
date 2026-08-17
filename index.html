@@ -13,12 +13,8 @@
             --font-color: #000;
             --font-hover-color: #000;
             --font-size: 18px;
-            --line-height: 1.5;
-            --page-horizontal-paddings: 20vw;
-
-            @media screen and (max-width: 1025px) {
-                --page-horizontal-paddings: 4vw;
-            }
+            --line-height: 1.25;
+            --page-horizontal-paddings: 5vw;
         }
 
         body {
@@ -27,12 +23,12 @@
             font-family: "Times New Roman", Times, serif;
             margin: 0;
             padding-top: 30px;
-            padding-bottom: 100px;
+            padding-bottom: calc(var(--line-height) * 100px);
             scroll-behavior: smooth;
         }
 
         hr {
-            margin: 100px auto;
+            margin: calc(var(--line-height) * 100px) auto;
         }
 
         h1,
@@ -50,7 +46,7 @@
         }
 
         h3 {
-            margin-top: 100px;
+            margin-top: calc(var(--line-height) * 100px);
             margin-bottom: 0px;
             font-size: calc(var(--font-size) + 4px);
         }
@@ -6345,7 +6341,7 @@
                 <div class="settings_item_control">
                     <button id="reduce_horizontal_paddings_button" class="settings_item_control__button" type="button"
                         title="Зменшити ширину полів">-</button>
-                    <span id="horizontal_paddings_value" class="settings_item_control__value">20</span>
+                    <span id="horizontal_paddings_value" class="settings_item_control__value">5</span>
                     <button id="increase_horizontal_paddings_button" class="settings_item_control__button" type="button"
                         title="Збільшити ширину полів">+</button>
                 </div>
@@ -6396,17 +6392,31 @@
             "Pisces",
         ];
 
-        if (localStorage.length > 0) {
+
+        if (localStorage.getItem("zb_font_size")) {
             root_style.setProperty("--font-size", localStorage.getItem("zb_font_size") + "px");
-            root_style.setProperty("--line-height", localStorage.getItem("zb_line_height"));
-            root_style.setProperty("--page-horizontal-paddings", localStorage.getItem("zb_horizontal_paddings") + "vw");
         } else {
             root_style.setProperty("--font-size", "18px");
             localStorage.setItem("zb_font_size", "18");
+        };
+
+        if (localStorage.getItem("zb_line_height")) {
+            root_style.setProperty("--line-height", localStorage.getItem("zb_line_height"));
+        } else {
             root_style.setProperty("--line-height", "1.25");
             localStorage.setItem("zb_line_height", "1.25");
-            root_style.setProperty("--page-horizontal-paddings", "20vw");
-            localStorage.setItem("zb_horizontal_paddings", "20");
+        };
+
+        if (localStorage.getItem("zb_horizontal_paddings")) {
+            root_style.setProperty("--page-horizontal-paddings", localStorage.getItem("zb_horizontal_paddings") + "vw");
+        } else {
+            if (!window.clientInformation.userAgentData.mobile) {
+                root_style.setProperty("--page-horizontal-paddings", "20vw");
+                localStorage.setItem("zb_horizontal_paddings", "20");
+            } else {
+                root_style.setProperty("--page-horizontal-paddings", "5vw");
+                localStorage.setItem("zb_horizontal_paddings", "5");
+            };
         };
 
         update_settings_values();
