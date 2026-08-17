@@ -60,7 +60,8 @@
             line-height: var(--line-height);
             text-align: justify;
             text-indent: 30px;
-            margin: 10px 0px;
+            margin: 0px 0px;
+            margin-bottom: calc(var(--line-height) * 10px);
             overflow-wrap: break-word;
             word-wrap: break-word;
             word-break: normal;
@@ -6332,9 +6333,21 @@
                 <div class="settings_item_control">
                     <button id="reduce_line_height_button" class="settings_item_control__button" type="button"
                         title="Зменшити міжрядковий інтервал">-</button>
-                    <span id="line_height_value" class="settings_item_control__value">1.5</span>
+                    <span id="line_height_value" class="settings_item_control__value">1.25</span>
                     <button id="increase_line_height_button" class="settings_item_control__button" type="button"
                         title="Збільшити міжрядковий інтервал">+</button>
+                </div>
+            </div>
+
+            <div class="settings_item">
+                <span class="settings_item_title">Ширина полів</span>
+
+                <div class="settings_item_control">
+                    <button id="reduce_horizontal_paddings_button" class="settings_item_control__button" type="button"
+                        title="Зменшити ширину полів">-</button>
+                    <span id="horizontal_paddings_value" class="settings_item_control__value">20</span>
+                    <button id="increase_horizontal_paddings_button" class="settings_item_control__button" type="button"
+                        title="Збільшити ширину полів">+</button>
                 </div>
             </div>
         </div>
@@ -6358,6 +6371,9 @@
         const ref_reduce_line_height_button = document.querySelector("#reduce_line_height_button");
         const ref_increase_line_height_button = document.querySelector("#increase_line_height_button");
         const ref_line_height_value = document.querySelector("#line_height_value");
+        const ref_reduce_horizontal_paddings_button = document.querySelector("#reduce_horizontal_paddings_button");
+        const ref_increase_horizontal_paddings_button = document.querySelector("#increase_horizontal_paddings_button");
+        const ref_horizontal_paddings_value = document.querySelector("#horizontal_paddings_value");
         const ref_menu_button = document.querySelector("#menu_button");
         const ref_menu = document.querySelector("#menu");
         const ref_menu_characteristic_list = document.querySelector("#characteristic_list");
@@ -6380,15 +6396,17 @@
             "Pisces",
         ];
 
-        if (localStorage.getItem("zb_default_settings")) {
+        if (localStorage.length > 0) {
             root_style.setProperty("--font-size", localStorage.getItem("zb_font_size") + "px");
-            root_style.setProperty("zb_line_height", localStorage.getItem("zb_line_height"));
+            root_style.setProperty("--line-height", localStorage.getItem("zb_line_height"));
+            root_style.setProperty("--page-horizontal-paddings", localStorage.getItem("zb_horizontal_paddings") + "vw");
         } else {
-            localStorage.setItem("zb_default_settings", true);
             root_style.setProperty("--font-size", "18px");
             localStorage.setItem("zb_font_size", "18");
             root_style.setProperty("--line-height", "1.25");
             localStorage.setItem("zb_line_height", "1.25");
+            root_style.setProperty("--page-horizontal-paddings", "20vw");
+            localStorage.setItem("zb_horizontal_paddings", "20");
         };
 
         update_settings_values();
@@ -6457,6 +6475,7 @@
         function update_settings_values() {
             ref_font_size_value.textContent = localStorage.getItem("zb_font_size");
             ref_line_height_value.textContent = localStorage.getItem("zb_line_height");
+            ref_horizontal_paddings_value.textContent = localStorage.getItem("zb_horizontal_paddings");
         };
 
         function togle_menu_zodiac_description_container(container) {
@@ -6478,6 +6497,15 @@
             is_menu_show = false;
         };
 
+        ref_closer.addEventListener("click", () => {
+            ref_closer.style.display = "none";
+            ref_settings.style.display = "none";
+            ref_menu.style.display = "none";
+
+            is_settings_show = false;
+            is_menu_show = false;
+        });
+
         ref_settings_button.addEventListener("click", () => {
             if (is_settings_show) {
                 ref_settings.style.display = "none";
@@ -6485,6 +6513,9 @@
             } else {
                 ref_settings.style.display = "block";
                 ref_closer.style.display = "block";
+                ref_menu.style.display = "none";
+
+                is_menu_show = false;
             };
 
             is_settings_show = !is_settings_show;
@@ -6497,18 +6528,12 @@
             } else {
                 ref_menu.style.display = "block";
                 ref_closer.style.display = "block";
+                ref_settings.style.display = "none";
+
+                is_settings_show = false;
             };
 
             is_menu_show = !is_menu_show;
-        });
-
-        ref_closer.addEventListener("click", () => {
-            ref_closer.style.display = "none";
-            ref_settings.style.display = "none";
-            ref_menu.style.display = "none";
-
-            is_settings_show = false;
-            is_menu_show = false;
         });
 
         ref_reduce_font_size_button.addEventListener("click", () => {
@@ -6536,6 +6561,20 @@
         ref_increase_line_height_button.addEventListener("click", () => {
             root_style.setProperty("--line-height", (Number(localStorage.getItem("zb_line_height")) + 0.05).toFixed(2));
             localStorage.setItem("zb_line_height", (Number(localStorage.getItem("zb_line_height")) + 0.05).toFixed(2));
+            update_settings_values();
+        });
+
+        ref_reduce_horizontal_paddings_button.addEventListener("click", () => {
+            if (Number(localStorage.getItem("zb_horizontal_paddings")) < 1) return;
+
+            root_style.setProperty("--page-horizontal-paddings", Number(localStorage.getItem("zb_horizontal_paddings")) - 1 + "vw");
+            localStorage.setItem("zb_horizontal_paddings", Number(localStorage.getItem("zb_horizontal_paddings")) - 1);
+            update_settings_values();
+        });
+
+        ref_increase_horizontal_paddings_button.addEventListener("click", () => {
+            root_style.setProperty("--page-horizontal-paddings", Number(localStorage.getItem("zb_horizontal_paddings")) + 1 + "vw");
+            localStorage.setItem("zb_horizontal_paddings", Number(localStorage.getItem("zb_horizontal_paddings")) + 1);
             update_settings_values();
         });
     </script>
