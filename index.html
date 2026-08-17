@@ -13,6 +13,7 @@
             --font-color: #000;
             --font-hover-color: #000;
             --font-size: 18px;
+            --line-height: 1.5;
             --page-horizontal-paddings: 20vw;
 
             @media screen and (max-width: 1025px) {
@@ -56,7 +57,7 @@
 
         p {
             font-size: calc(var(--font-size) + 2px);
-            line-height: 1.5;
+            line-height: var(--line-height);
             text-align: justify;
             text-indent: 30px;
             margin: 10px 0px;
@@ -245,14 +246,24 @@
         }
 
         .settings_container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
             padding: 20px;
         }
 
         .settings_item {
             display: flex;
             flex-direction: row;
+            flex-wrap: nowrap;
             justify-content: space-between;
             align-items: center;
+            cursor: default;
+
+            &:not(:last-child) {
+                padding-bottom: 20px;
+                border-bottom: 1px solid #ccc;
+            }
         }
 
         .settings_item_control {
@@ -278,6 +289,15 @@
                 background-color: var(--accent-color);
                 color: var(--font-hover-color);
             }
+        }
+
+        .settings_item_control__value {
+            width: calc(var(--font-size) * 2);
+            padding: 3px 8px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            cursor: default;
         }
     </style>
 </head>
@@ -6300,9 +6320,21 @@
                 <div class="settings_item_control">
                     <button id="reduce_font_size_button" class="settings_item_control__button" type="button"
                         title="Зменшити розмір шрифту">-</button>
-                    <span id="font_size_value" class="settings_item_control__value"></span>
+                    <span id="font_size_value" class="settings_item_control__value">18</span>
                     <button id="increase_font_size_button" class="settings_item_control__button" type="button"
                         title="Збільшити розмір шрифту">+</button>
+                </div>
+            </div>
+
+            <div class="settings_item">
+                <span class="settings_item_title">Міжрядковий інтервал</span>
+
+                <div class="settings_item_control">
+                    <button id="reduce_line_height_button" class="settings_item_control__button" type="button"
+                        title="Зменшити міжрядковий інтервал">-</button>
+                    <span id="line_height_value" class="settings_item_control__value">1.5</span>
+                    <button id="increase_line_height_button" class="settings_item_control__button" type="button"
+                        title="Збільшити міжрядковий інтервал">+</button>
                 </div>
             </div>
         </div>
@@ -6323,6 +6355,9 @@
         const ref_reduce_font_size_button = document.querySelector("#reduce_font_size_button");
         const ref_increase_font_size_button = document.querySelector("#increase_font_size_button");
         const ref_font_size_value = document.querySelector("#font_size_value");
+        const ref_reduce_line_height_button = document.querySelector("#reduce_line_height_button");
+        const ref_increase_line_height_button = document.querySelector("#increase_line_height_button");
+        const ref_line_height_value = document.querySelector("#line_height_value");
         const ref_menu_button = document.querySelector("#menu_button");
         const ref_menu = document.querySelector("#menu");
         const ref_menu_characteristic_list = document.querySelector("#characteristic_list");
@@ -6345,11 +6380,15 @@
             "Pisces",
         ];
 
-        if (localStorage.getItem("zb_font_size")) {
+        if (localStorage.getItem("zb_default_settings")) {
             root_style.setProperty("--font-size", localStorage.getItem("zb_font_size") + "px");
+            root_style.setProperty("zb_line_height", localStorage.getItem("zb_line_height"));
         } else {
+            localStorage.setItem("zb_default_settings", true);
             root_style.setProperty("--font-size", "18px");
             localStorage.setItem("zb_font_size", "18");
+            root_style.setProperty("--line-height", "1.50");
+            localStorage.setItem("zb_line_height", "1.50");
         };
 
         update_settings_values();
@@ -6417,6 +6456,7 @@
 
         function update_settings_values() {
             ref_font_size_value.textContent = localStorage.getItem("zb_font_size");
+            ref_line_height_value.textContent = localStorage.getItem("zb_line_height");
         };
 
         function togle_menu_zodiac_description_container(container) {
@@ -6480,6 +6520,18 @@
         ref_increase_font_size_button.addEventListener("click", () => {
             root_style.setProperty("--font-size", Number(localStorage.getItem("zb_font_size")) + 1 + "px");
             localStorage.setItem("zb_font_size", Number(localStorage.getItem("zb_font_size")) + 1);
+            update_settings_values();
+        });
+
+        ref_reduce_line_height_button.addEventListener("click", () => {
+            root_style.setProperty("--line-height", (Number(localStorage.getItem("zb_line_height")) - 0.05).toFixed(2));
+            localStorage.setItem("zb_line_height", (Number(localStorage.getItem("zb_line_height")) - 0.05).toFixed(2));
+            update_settings_values();
+        });
+
+        ref_increase_line_height_button.addEventListener("click", () => {
+            root_style.setProperty("--line-height", (Number(localStorage.getItem("zb_line_height")) + 0.05).toFixed(2));
+            localStorage.setItem("zb_line_height", (Number(localStorage.getItem("zb_line_height")) + 0.05).toFixed(2));
             update_settings_values();
         });
     </script>
