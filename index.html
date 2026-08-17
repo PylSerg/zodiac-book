@@ -6387,8 +6387,8 @@
             localStorage.setItem("zb_default_settings", true);
             root_style.setProperty("--font-size", "18px");
             localStorage.setItem("zb_font_size", "18");
-            root_style.setProperty("--line-height", "1.50");
-            localStorage.setItem("zb_line_height", "1.50");
+            root_style.setProperty("--line-height", "1.25");
+            localStorage.setItem("zb_line_height", "1.25");
         };
 
         update_settings_values();
@@ -6512,6 +6512,8 @@
         });
 
         ref_reduce_font_size_button.addEventListener("click", () => {
+            if (Number(localStorage.getItem("zb_font_size")) < 2) return;
+
             root_style.setProperty("--font-size", Number(localStorage.getItem("zb_font_size")) - 1 + "px");
             localStorage.setItem("zb_font_size", Number(localStorage.getItem("zb_font_size")) - 1);
             update_settings_values();
@@ -6524,6 +6526,8 @@
         });
 
         ref_reduce_line_height_button.addEventListener("click", () => {
+            if (Number(localStorage.getItem("zb_line_height")) < 1.05) return;
+
             root_style.setProperty("--line-height", (Number(localStorage.getItem("zb_line_height")) - 0.05).toFixed(2));
             localStorage.setItem("zb_line_height", (Number(localStorage.getItem("zb_line_height")) - 0.05).toFixed(2));
             update_settings_values();
