@@ -7,6 +7,8 @@
     <title>Зодіакальний гороскоп</title>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Bitter:ital,wght@0,100..900;1,100..900&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Martian+Mono:wght@100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
         :root {
             --accent-color: #dbeff8;
             --background-color: #fff;
@@ -14,13 +16,14 @@
             --font-hover-color: #000;
             --font-size: 18px;
             --line-height: 1.25;
+            --font-family: "Times New Roman";
             --page-horizontal-paddings: 5vw;
         }
 
         body {
             color: var(--font-color);
             font-size: var(--font-size);
-            font-family: "Times New Roman", Times, serif;
+            font-family: var(--font-family);
             margin: 0;
             padding-top: 30px;
             padding-bottom: calc(var(--line-height) * 100px);
@@ -261,6 +264,14 @@
                 padding-bottom: 20px;
                 border-bottom: 1px solid #ccc;
             }
+        }
+
+        #font_family_selector {
+            background-color: var(--background-color);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: var(--font-family);
+            font-size: var(--font-size);
         }
 
         .settings_item_control {
@@ -6312,6 +6323,30 @@
     <div id="settings">
         <div class="settings_container">
             <div class="settings_item">
+                <span class="settings_item_title">Шрифт</span>
+
+                <select id="font_family_selector" name="font-family">
+                    <option value="Arial" style="font-family:'Arial'">Arial</option>
+                    <option value="Bad Script" style="font-family:'Bad Script'">Bad Script</option>
+                    <option value="Bitter" style="font-family:'Bitter'">Bitter</option>
+                    <option value="Google Sans" style="font-family:'Google Sans'">Google Sans</option>
+                    <option value="Martian Mono" style="font-family:'Martian Mono'">Martian Mono</option>
+                    <option value="Montserrat" style="font-family:'Montserrat'">Montserrat</option>
+                    <option value="Noto Sans" style="font-family:'Noto Sans'">Noto Sans</option>
+                    <option value="Nunito" style="font-family:'Nunito'">Nunito</option>
+                    <option value="Open Sans" style="font-family:'Open Sans'">Open Sans</option>
+                    <option value="Playfair" style="font-family:'Playfair'">Playfair</option>
+                    <option value="Roboto" style="font-family:'Roboto'">Roboto</option>
+                    <option value="Roboto Condensed" style="font-family:'Roboto Condensed'">Roboto Condensed</option>
+                    <option value="Roboto Mono" style="font-family:'Roboto Mono'">Roboto Mono</option>
+                    <option value="Roboto Slab" style="font-family:'Roboto Slab'">Roboto Slab</option>
+                    <option value="Source Sans 3" style="font-family:'Source Sans 3'">Source Sans 3</option>
+                    <option value="Spectral" style="font-family:'Spectral'">Spectral</option>
+                    <option value="Times New Roman" style="font-family:'Times New Roman'">Times New Roman</option>
+                </select>
+            </div>
+
+            <div class="settings_item">
                 <span class="settings_item_title">Розмір шрифту</span>
 
                 <div class="settings_item_control">
@@ -6361,6 +6396,7 @@
         const ref_closer = document.querySelector("#closer");
         const ref_settings_button = document.querySelector("#settings_button");
         const ref_settings = document.querySelector("#settings");
+        const ref_font_family_selector = document.querySelector("#font_family_selector");
         const ref_reduce_font_size_button = document.querySelector("#reduce_font_size_button");
         const ref_increase_font_size_button = document.querySelector("#increase_font_size_button");
         const ref_font_size_value = document.querySelector("#font_size_value");
@@ -6392,6 +6428,14 @@
             "Pisces",
         ];
 
+
+
+        if (localStorage.getItem("zb_font_family")) {
+            root_style.setProperty("--font-family", localStorage.getItem("zb_font_family"));
+        } else {
+            root_style.setProperty("--font-family", "Times New Roman");
+            localStorage.setItem("zb_font_family", "Times New Roman");
+        };
 
         if (localStorage.getItem("zb_font_size")) {
             root_style.setProperty("--font-size", localStorage.getItem("zb_font_size") + "px");
@@ -6486,6 +6530,15 @@
             ref_font_size_value.textContent = localStorage.getItem("zb_font_size");
             ref_line_height_value.textContent = localStorage.getItem("zb_line_height");
             ref_horizontal_paddings_value.textContent = localStorage.getItem("zb_horizontal_paddings");
+
+            const options = ref_font_family_selector.options;
+
+            for (i = 0; i < options.length; i++) {
+                if (options[i].label === localStorage.getItem("zb_font_family")) {
+                    const selected_font_family = document.querySelector(`[value="${options[i].label}"]`);
+                    selected_font_family.setAttribute("selected", "");
+                };
+            };
         };
 
         function togle_menu_zodiac_description_container(container) {
@@ -6544,6 +6597,11 @@
             };
 
             is_menu_show = !is_menu_show;
+        });
+
+        ref_font_family_selector.addEventListener("change", (e) => {
+            root_style.setProperty("--font-family", e.target.value);
+            localStorage.setItem("zb_font_family", e.target.value);
         });
 
         ref_reduce_font_size_button.addEventListener("click", () => {
